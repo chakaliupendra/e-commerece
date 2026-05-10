@@ -15,7 +15,6 @@
 }
 
 :root {
-  /* Soft, Designer Light Mode */
   --background: #fdfdfd;
   --foreground: #020617;
   --card: #ffffff;
@@ -25,12 +24,10 @@
   --border: rgba(0, 0, 0, 0.06);
   --input: #f1f5f9;
   --ring: #ff6b00;
-  
   --radius: 1.5rem;
 }
 
 .dark {
-  /* Sleek, Premium Dark Mode */
   --background: #020617;
   --foreground: #f8fafc;
   --card: #0f172a;
@@ -42,53 +39,45 @@
   --ring: #ff8c33;
 }
 
+/* 📐 THE CONTAINER SYSTEM */
+
+/* Wide - for product galleries */
+.container-gallery {
+  @apply max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16;
+}
+
+/* Standard - for Cart and Checkout */
+.container-standard {
+  @apply max-w-6xl mx-auto px-6 md:px-10;
+}
+
+/* Focus - for Login and Register (Narrower) */
+.container-focus {
+  @apply max-w-md mx-auto px-4;
+}
+
+/* Utility Padding */
+.py-section {
+  @apply py-12 md:py-20 lg:py-28;
+}
+
 :root {
   font-family: 'Inter', system-ui, sans-serif;
-  scroll-behavior: smooth;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
   min-height: 100vh;
-  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  /* Added subtle background texture */
-  background-image: 
-    radial-gradient(at 0% 0%, rgba(255, 107, 0, 0.02) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(255, 107, 0, 0.02) 0px, transparent 50%);
+  transition: background-color 0.4s ease;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Outfit', sans-serif;
-  letter-spacing: -0.02em;
-}
-
-/* Luxury Spacing & Padding System */
-.section-padding {
-  @apply py-16 md:py-24 lg:py-32;
-}
-
-.container-padding {
-  @apply px-6 md:px-12 lg:px-16;
-}
-
-/* Centered & Refined Container */
-.main-container {
-  @apply max-w-7xl mx-auto container-padding;
-}
-
-/* Aesthetic Glassmorphism */
-.glass {
-  @apply bg-background/70 backdrop-blur-xl border border-border shadow-sm;
-}
-
-/* Premium Card Style */
 .aesthetic-card {
-  @apply bg-card rounded-[2rem] border border-border transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-1;
+  @apply bg-card rounded-[2.5rem] border border-border shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all duration-500;
 }
 
 .btn-primary {
-  @apply bg-primary text-primary-foreground hover:opacity-90 transition-all active:scale-95 shadow-xl shadow-primary/20 font-extrabold px-10 py-4 rounded-2xl;
+  @apply bg-primary text-primary-foreground hover:opacity-90 transition-all active:scale-95 shadow-xl shadow-primary/20 font-black px-10 py-4 rounded-2xl;
 }
 
 #root {

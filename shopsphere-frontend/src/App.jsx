@@ -19,7 +19,6 @@ function App() {
   const isAdmin = user?.role === 'ROLE_ADMIN' || user?.role === 'ADMIN';
 
   useEffect(() => {
-    // Apply theme to html element
     const root = window.document.documentElement;
     root.classList.remove('light', 'dark');
     root.classList.add(theme);
@@ -33,9 +32,9 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
+      <div className="min-h-screen bg-background text-foreground transition-colors duration-300 flex flex-col">
         <Navbar />
-        <main className="main-container py-8">
+        <main className="flex-1">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/" />} />
