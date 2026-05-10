@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, Search, User, LogOut, Package, ChevronDown, LayoutDashboard } from 'lucide-react';
+import { ShoppingCart, Search, User, LogOut, Package, ChevronDown, LayoutDashboard, Zap } from 'lucide-react';
 import useAuthStore from '../store/useAuthStore';
 import useCartStore from '../store/useCartStore';
 import { Button } from './ui/button';
@@ -29,82 +29,77 @@ const Navbar = () => {
   const isAdmin = user?.role === 'ROLE_ADMIN' || user?.role === 'ADMIN';
 
   return (
-    <nav className="sticky top-0 z-50 w-full bg-[#2874f0] text-white py-2.5 shadow-md">
-      <div className="container mx-auto px-4 flex items-center justify-between gap-4 max-w-7xl">
+    <nav className="sticky top-0 z-50 w-full glass border-b border-white/10 py-3 shadow-2xl">
+      <div className="container mx-auto px-4 flex items-center justify-between gap-6 max-w-7xl">
         {/* Logo */}
-        <Link to="/" className="flex flex-col items-start group">
-          <div className="flex items-center gap-1 italic font-bold text-xl">
-            <span>ShopSphere</span>
-            <Package size={20} className="text-yellow-400 group-hover:scale-110 transition-transform" />
+        <Link to="/" className="flex items-center gap-2 group">
+          <div className="w-10 h-10 bg-gradient-to-tr from-purple-600 to-pink-500 rounded-xl flex items-center justify-center glow-purple">
+            <Zap size={22} className="text-white fill-white" />
           </div>
-          <span className="text-[11px] italic text-gray-100 flex items-center gap-1 -mt-1">
-            Explore <span className="text-yellow-400 font-bold">Plus</span>
-          </span>
+          <div className="hidden sm:block">
+            <h1 className="text-xl font-extrabold tracking-tighter text-white">
+              SHOP<span className="text-purple-500">SPHERE</span>
+            </h1>
+            <p className="text-[10px] text-gray-400 font-mono tracking-widest uppercase -mt-1">By ChaiCode</p>
+          </div>
         </Link>
 
         {/* Search Bar */}
-        <form onSubmit={handleSearch} className="flex-1 max-w-xl relative hidden md:block">
+        <form onSubmit={handleSearch} className="flex-1 max-w-lg relative hidden md:block">
           <Input
             type="text"
-            placeholder="Search for products, brands and more"
-            className="w-full bg-white text-gray-900 pr-10 focus-visible:ring-0 border-none shadow-sm h-9"
+            placeholder="Search products..."
+            className="w-full bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus-visible:ring-purple-500/50 h-10 rounded-xl"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 text-[#2874f0]">
-            <Search size={20} />
+          <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-purple-400 transition-colors">
+            <Search size={18} />
           </button>
         </form>
 
         {/* Actions */}
-        <div className="flex items-center gap-6 font-semibold text-[15px]">
+        <div className="flex items-center gap-6">
           {isAuthenticated ? (
-            <div className="flex items-center gap-6">
-              <div className="flex items-center gap-1 cursor-pointer hover:opacity-90 group relative">
-                <User size={18} />
-                <span>{user?.name?.split(' ')[0]}</span>
-                <ChevronDown size={14} className="group-hover:rotate-180 transition-transform" />
-                
-                {/* Dropdown Placeholder */}
-                <div className="absolute top-full right-0 mt-2 w-48 bg-white text-gray-800 shadow-xl rounded-sm py-2 hidden group-hover:block border border-gray-100">
-                  {isAdmin && (
-                    <Link to="/admin/dashboard" className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 text-sm">
-                      <LayoutDashboard size={16} className="text-blue-600" />
-                      Admin Dashboard
-                    </Link>
-                  )}
-                  <button onClick={handleLogout} className="w-full flex items-center gap-2 px-4 py-2 hover:bg-gray-50 text-sm text-red-600 border-t mt-1">
-                    <LogOut size={16} />
-                    Logout
-                  </button>
+            <div className="group relative">
+              <div className="flex items-center gap-2 cursor-pointer hover:text-purple-400 transition-colors">
+                <div className="w-8 h-8 rounded-full bg-purple-500/20 border border-purple-500/50 flex items-center justify-center text-xs text-purple-400 font-bold">
+                  {user?.name?.[0]}
                 </div>
+                <span className="text-sm font-medium hidden sm:inline">{user?.name?.split(' ')[0]}</span>
+                <ChevronDown size={14} className="group-hover:rotate-180 transition-transform" />
+              </div>
+              
+              <div className="absolute top-full right-0 mt-2 w-56 glass rounded-xl py-2 hidden group-hover:block border border-white/10 shadow-2xl animate-in fade-in slide-in-from-top-2">
+                {isAdmin && (
+                  <Link to="/admin/dashboard" className="flex items-center gap-3 px-4 py-2.5 hover:bg-white/5 text-sm transition-colors">
+                    <LayoutDashboard size={16} className="text-purple-500" />
+                    Admin Dashboard
+                  </Link>
+                )}
+                <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-500/10 text-sm text-red-400 border-t border-white/5 mt-1 transition-colors">
+                  <LogOut size={16} />
+                  Logout
+                </button>
               </div>
             </div>
           ) : (
             <Link to="/login">
-              <Button variant="flipkart" size="sm" className="h-8">
-                Login
+              <Button className="bg-gradient-to-r from-purple-600 to-pink-500 hover:opacity-90 text-white border-none rounded-xl px-6 h-10 font-bold shadow-lg shadow-purple-500/20">
+                Sign In
               </Button>
             </Link>
           )}
 
-          <div className="hidden lg:block cursor-pointer">Become a Seller</div>
-          
-          <div className="flex items-center gap-1 cursor-pointer group">
-            <span>More</span>
-            <ChevronDown size={14} className="group-hover:rotate-180 transition-transform" />
-          </div>
-
-          <Link to="/cart" className="flex items-center gap-2 hover:opacity-90 relative">
-            <div className="relative">
-              <ShoppingCart size={20} />
+          <Link to="/cart" className="relative group">
+            <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-purple-500/50 group-hover:bg-purple-500/10 transition-all">
+              <ShoppingCart size={20} className="text-gray-300 group-hover:text-purple-400" />
               {itemCount > 0 && (
-                <Badge variant="flipkart" className="absolute -top-2 -right-2 px-1 min-w-[18px] h-[18px] flex items-center justify-center text-[10px]">
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-pink-500 text-white rounded-full flex items-center justify-center text-[10px] font-bold border-2 border-[#0a0a0a]">
                   {itemCount}
-                </Badge>
+                </span>
               )}
             </div>
-            <span className="hidden sm:inline">Cart</span>
           </Link>
         </div>
       </div>

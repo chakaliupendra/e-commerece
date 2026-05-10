@@ -1,25 +1,61 @@
 @import "tailwindcss";
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
 
 @theme {
-  --color-flipkart-blue: #2874f0;
-  --color-flipkart-yellow: #fb641b;
+  --color-brand-primary: #8b5cf6;
+  --color-brand-secondary: #d946ef;
+  --color-brand-accent: #22c55e;
+  --color-brand-bg: #0a0a0a;
+  --color-brand-card: rgba(23, 23, 23, 0.7);
 }
 
 :root {
-  font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color-scheme: dark;
 }
 
 body {
   margin: 0;
-  min-width: 320px;
+  background-color: var(--color-brand-bg);
+  color: #ffffff;
   min-height: 100vh;
-  @apply bg-gray-50 text-gray-900;
+  background-image: 
+    linear-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.glass {
+  background: var(--color-brand-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glow-purple {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+}
+
+.glow-pink {
+  box-shadow: 0 0 20px rgba(217, 70, 239, 0.3);
 }
 
 #root {
   width: 100%;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #444;
 }
