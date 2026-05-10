@@ -1,10 +1,12 @@
 import React from 'react';
 import { ShoppingCart, Plus } from 'lucide-react';
 import useCartStore from '../store/useCartStore';
+import useAuthStore from '../store/useAuthStore';
 import './ProductCard.css';
 
 const ProductCard = ({ product }) => {
   const { addItem } = useCartStore();
+  const { isAuthenticated } = useAuthStore();
 
   return (
     <div className="product-card glass">
@@ -20,7 +22,7 @@ const ProductCard = ({ product }) => {
         <p className="product-desc">{product.description}</p>
         <div className="product-footer">
           <span className="product-price">${product.price.toFixed(2)}</span>
-          <button onClick={() => addItem(product)} className="add-to-cart">
+          <button onClick={() => addItem(product, 1, isAuthenticated)} className="add-to-cart">
             <Plus size={18} />
             <span>Add</span>
           </button>

@@ -13,27 +13,8 @@ const Cart = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isAuthenticated) {
-      fetchCart();
-    }
+    fetchCart(isAuthenticated);
   }, [isAuthenticated, fetchCart]);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center p-4">
-        <img 
-          src="https://rukminim2.flixcart.com/www/800/800/promos/16/05/2019/d438a32e-765a-4d8b-b4a6-520b560971e8.png?q=90" 
-          alt="Empty Cart" 
-          className="w-64 mb-6"
-        />
-        <h2 className="text-xl font-semibold mb-2">Missing Cart items?</h2>
-        <p className="text-gray-500 mb-6">Login to see the items you added previously</p>
-        <Link to="/login">
-          <Button className="bg-orange-500 hover:bg-orange-600 px-12">Login</Button>
-        </Link>
-      </div>
-    );
-  }
 
   const items = cart?.items || [];
   const totalPrice = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
@@ -64,15 +45,20 @@ const Cart = () => {
         
         {/* Cart Items */}
         <div className="lg:col-span-2 space-y-4">
+          {!isAuthenticated && (
+            <Card className="rounded-sm shadow-sm border-none bg-white p-4 flex items-center justify-between">
+              <span className="text-sm font-medium">Missing Cart items? Login to see items you added previously</span>
+              <Link to="/login">
+                <Button variant="outline" size="sm" className="text-blue-600 border-blue-600">Login</Button>
+              </Link>
+            </Card>
+          )}
+
           <Card className="rounded-sm shadow-sm border-none">
             <div className="p-4 border-b flex justify-between items-center bg-white">
               <h2 className="text-lg font-semibold flex items-center gap-2">
                 Flipkart ({items.length})
               </h2>
-              <div className="text-sm flex items-center gap-1 text-gray-600">
-                <ShoppingBag size={16} />
-                Deliver to: <span className="font-semibold text-gray-900 ml-1">Select Address</span>
-              </div>
             </div>
             
             <CardContent className="p-0 bg-white">
@@ -99,14 +85,14 @@ const Cart = () => {
                         <button 
                           className="p-1 px-3 hover:bg-gray-100 disabled:opacity-30"
                           disabled={item.quantity <= 1}
-                          onClick={() => addItem({ id: item.productId, name: item.productName, price: item.price }, -1)}
+                          onClick={() => addItem({ id: item.productId, name: item.productName, price: item.price }, -1, isAuthenticated)}
                         >
                           <Minus size={14} />
                         </button>
                         <span className="px-4 font-semibold text-sm">{item.quantity}</span>
                         <button 
                           className="p-1 px-3 hover:bg-gray-100"
-                          onClick={() => addItem({ id: item.productId, name: item.productName, price: item.price }, 1)}
+                          onClick={() => addItem({ id: item.productId, name: item.productName, price: item.price }, 1, isAuthenticated)}
                         >
                           <Plus size={14} />
                         </button>
@@ -114,7 +100,7 @@ const Cart = () => {
                       
                       <button 
                         className="text-sm font-bold uppercase hover:text-blue-600 transition-colors"
-                        onClick={() => removeItem(item.productId)}
+                        onClick={() => removeItem(item.productId, isAuthenticated)}
                       >
                         Remove
                       </button>
