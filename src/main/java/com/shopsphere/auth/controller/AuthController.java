@@ -24,12 +24,23 @@ public class AuthController {
         return service.saveUser(user);
     }
 
+    @Autowired
+    private com.shopsphere.auth.repository.UserCredentialRepository userRepository;
+
     @PostMapping("/login")
-    public String getToken(@RequestBody AuthRequest authRequest) {
+    public java.util.Map<String, Object> getToken(@RequestBody AuthRequest authRequest) {
         System.out.println("Login attempt for: " + authRequest.getEmail());
-        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword()));
+        Authentication authenticate = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
+        );
         if (authenticate.isAuthenticated()) {
-            return service.generateToken(authRequest.getEmail());
+            String token = service.generateToken(authRequest.getEmail());
+            UserCredential user = userRepository.findByEmail(authRequest.getEmail()).orElse(null);
+            
+            java.util.Map<String, Object> response = new java.util.HashMap<>();
+            response.put("token", token);
+            response.put("user", user);
+            return response;
         } else {
             throw new RuntimeException("invalid access");
         }
