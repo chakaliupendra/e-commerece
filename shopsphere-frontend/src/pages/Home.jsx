@@ -32,7 +32,7 @@ const Home = () => {
   }, [searchQuery]);
 
   return (
-    <div className="space-y-12 md:space-y-24 pb-20">
+    <div className="container-gallery py-section space-y-12 md:space-y-24 pb-20">
       {/* Hero Section - Balanced Padding & Centered */}
       <section className="relative text-center space-y-12 section-padding px-4">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[500px] bg-primary/5 blur-[120px] rounded-full -z-10" />

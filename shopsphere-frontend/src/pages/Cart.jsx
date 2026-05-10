@@ -38,7 +38,7 @@ const Cart = () => {
   }
 
   return (
-    <div className="min-h-screen py-12 px-4">
+    <div className="container-standard py-section min-h-screen py-12 px-4">
       <div className="max-w-6xl mx-auto space-y-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="space-y-1">

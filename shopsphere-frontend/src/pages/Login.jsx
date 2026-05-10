@@ -17,7 +17,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-[90vh] flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="container-focus py-section min-h-[80vh] flex items-center justify-center p-4 relative overflow-hidden">
       {/* Aesthetic Background Elements */}
       <div className="absolute top-20 left-20 w-64 h-64 bg-brand-500/10 rounded-full blur-3xl -z-10 animate-pulse" />
       <div className="absolute bottom-20 right-20 w-96 h-96 bg-brand-500/5 rounded-full blur-[120px] -z-10" />
