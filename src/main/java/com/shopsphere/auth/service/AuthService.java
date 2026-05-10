@@ -19,9 +19,18 @@ public class AuthService {
 
     public String saveUser(UserCredential credential) {
         credential.setPassword(passwordEncoder.encode(credential.getPassword()));
-        if (credential.getRole() == null) {
-            credential.setRole("ROLE_USER");
+        
+        String role = credential.getRole();
+        if (role == null || role.isEmpty()) {
+            role = "USER";
         }
+        
+        // Ensure role has ROLE_ prefix for Spring Security hasRole() to work
+        if (!role.startsWith("ROLE_")) {
+            role = "ROLE_" + role.toUpperCase();
+        }
+        
+        credential.setRole(role);
         repository.save(credential);
         return "user added to the system";
     }
