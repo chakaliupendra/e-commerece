@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import api from '../api/axios';
 import ProductCard from '../components/ProductCard';
 import './Home.css';
@@ -6,11 +7,17 @@ import './Home.css';
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const searchQuery = new URLSearchParams(location.search).get('search');
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setLoading(true);
       try {
-        const response = await api.get('/products');
+        const endpoint = searchQuery 
+          ? `/products/search?name=${searchQuery}` 
+          : '/products';
+        const response = await api.get(endpoint);
         setProducts(response.data.content || response.data);
       } catch (error) {
         console.error('Error fetching products:', error);
@@ -19,7 +26,7 @@ const Home = () => {
       }
     };
     fetchProducts();
-  }, []);
+  }, [searchQuery]);
 
   return (
     <div className="home-page container">
