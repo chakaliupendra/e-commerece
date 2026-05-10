@@ -1,40 +1,84 @@
 @import "tailwindcss";
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 @theme {
-  --color-brand-primary: #ff6b00;
-  --color-brand-secondary: #fb641b;
-  --color-brand-accent: #ff9d00;
-  --color-brand-bg: #f8fafc;
+  --color-brand-50: #fff7ed;
+  --color-brand-100: #ffedd5;
+  --color-brand-500: #ff6b00;
+  --color-brand-600: #ea580c;
+  --color-brand-700: #c2410c;
+  --color-slate-900: #0f172a;
+  --color-slate-950: #020617;
 }
 
 :root {
   font-family: 'Plus Jakarta Sans', sans-serif;
+  --primary: #ff6b00;
+  --primary-glow: rgba(255, 107, 0, 0.15);
 }
 
 body {
   margin: 0;
-  background-color: var(--color-brand-bg);
-  color: #0f172a;
+  background-color: #fcfcfd;
+  color: #1e293b;
   min-height: 100vh;
+  /* Subtle mesh gradient background */
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(255, 107, 0, 0.03) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(255, 107, 0, 0.03) 0px, transparent 50%);
 }
 
-.glass {
-  background: rgba(255, 255, 255, 0.8);
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Glassmorphism Refined */
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+}
+
+.glass-dark {
+  background: rgba(15, 23, 42, 0.8);
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.shadow-orange {
-  box-shadow: 0 10px 30px -10px rgba(255, 107, 0, 0.3);
+/* Unique Brand Elements */
+.orange-glow {
+  box-shadow: 0 0 25px var(--primary-glow);
 }
 
-.orange-gradient {
+.btn-premium {
+  @apply relative overflow-hidden transition-all duration-300 active:scale-95 disabled:opacity-50;
   background: linear-gradient(135deg, #ff6b00 0%, #fb641b 100%);
+  color: white;
+  box-shadow: 0 10px 20px -10px rgba(255, 107, 0, 0.5);
+}
+
+.btn-premium:hover {
+  @apply shadow-lg;
+  box-shadow: 0 12px 24px -10px rgba(255, 107, 0, 0.6);
+  transform: translateY(-2px);
+}
+
+/* Image Aspect Ratio Enforcement */
+.img-contain {
+  @apply w-full h-full object-contain;
+}
+
+.img-cover {
+  @apply w-full h-full object-cover;
 }
 
 #root {
   width: 100%;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
 }
