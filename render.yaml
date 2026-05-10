@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: shopsphere-backend
+    env: docker
+    plan: free
+    region: ohio
+    dockerContext: .
+    dockerfilePath: Dockerfile
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://ep-weathered-morning-ap1fuqw3.c-7.us-east-1.aws.neon.tech/neondb?sslmode=require
+      - key: SPRING_DATASOURCE_USERNAME
+        value: neondb_owner
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: npg_9Odrm2oAXxQY
+      - key: JWT_SECRET
+        value: 5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437
+      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        value: update
