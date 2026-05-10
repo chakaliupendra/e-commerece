@@ -17,8 +17,8 @@ const Home = () => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const endpoint = searchQuery 
-          ? `/products/search?name=${searchQuery}` 
+        const endpoint = searchQuery
+          ? `/products/search?name=${searchQuery}`
           : '/products';
         const response = await api.get(endpoint);
         setProducts(response.data.content || response.data);
@@ -33,11 +33,10 @@ const Home = () => {
 
   return (
     <div className="space-y-24">
-      {/* Hero Section - Centered & Aesthetic */}
       <section className="relative text-center space-y-8 pt-12">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-96 bg-primary/10 blur-[120px] rounded-full -z-10" />
-        
-        <div className="space-y-4">
+
+        <div className="space-y-8">
           <Badge className="bg-primary/10 text-primary border-primary/20 font-black px-6 py-2 rounded-full text-xs uppercase tracking-[0.2em] animate-in fade-in slide-in-from-bottom-2">
             <Sparkles size={14} className="mr-2" /> Summer Collection 2026
           </Badge>
@@ -45,7 +44,7 @@ const Home = () => {
             Experience the Future of <span className="text-primary">E-Commerce</span>
           </h1>
           <p className="text-lg md:text-xl text-foreground/50 max-w-2xl mx-auto font-medium leading-relaxed">
-            Discover a handpicked collection of premium essentials designed for modern life. 
+            Discover a handpicked collection of premium essentials designed for modern life.
             Quality guaranteed, delivered to your doorstep.
           </p>
         </div>
