@@ -19,12 +19,12 @@
   --foreground: #0f172a;
   --card: #ffffff;
   --card-foreground: #0f172a;
-  --primary: #6366f1;
+  --primary: #ff6b00; /* Vivid Orange */
   --primary-foreground: #ffffff;
   --border: #e2e8f0;
   --input: #e2e8f0;
-  --ring: #6366f1;
-
+  --ring: #ff6b00;
+  
   --radius: 1rem;
 }
 
@@ -33,11 +33,11 @@
   --foreground: #f8fafc;
   --card: #0f172a;
   --card-foreground: #f8fafc;
-  --primary: #818cf8;
+  --primary: #ff8c33; /* Softer Orange for Dark Mode */
   --primary-foreground: #0f172a;
   --border: #1e293b;
   --input: #1e293b;
-  --ring: #818cf8;
+  --ring: #ff8c33;
 }
 
 :root {
@@ -52,15 +52,11 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
   font-family: 'Outfit', sans-serif;
 }
 
+/* Custom Glassmorphism with Orange Glow */
 .glass {
   background: hsla(var(--background), 0.8);
   backdrop-filter: blur(12px);
@@ -68,13 +64,14 @@ h6 {
 }
 
 .hero-gradient {
-  background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%);
+  background: radial-gradient(circle at 50% 50%, rgba(255, 107, 0, 0.1) 0%, transparent 50%);
 }
 
-.btn-indigo {
+.btn-primary {
   @apply bg-primary text-primary-foreground hover:opacity-90 transition-all active:scale-95 shadow-lg shadow-primary/20 font-bold px-8 py-3 rounded-2xl;
 }
 
+/* Centered Container */
 .main-container {
   @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
 }

@@ -110,13 +110,13 @@ const Checkout = () => {
         <div className="flex items-center justify-between mb-8 px-4 overflow-x-auto gap-4">
           {[1, 2, 3].map((s) => (
             <div key={s} className="flex items-center gap-2">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold transition-colors ${step >= s ? 'bg-blue-600 text-white' : 'bg-white text-gray-400 border'}`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold transition-colors ${step >= s ? 'bg-primary text-white' : 'bg-white text-gray-400 border'}`}>
                 {s}
               </div>
-              <span className={`text-sm font-semibold whitespace-nowrap ${step >= s ? 'text-blue-600' : 'text-gray-400'}`}>
+              <span className={`text-sm font-semibold whitespace-nowrap ${step >= s ? 'text-primary' : 'text-gray-400'}`}>
                 {s === 1 ? 'Delivery Address' : s === 2 ? 'Order Summary' : 'Payment'}
               </span>
-              {s < 3 && <div className={`w-12 h-[2px] hidden sm:block ${step > s ? 'bg-blue-600' : 'bg-gray-200'}`} />}
+              {s < 3 && <div className={`w-12 h-[2px] hidden sm:block ${step > s ? 'bg-primary' : 'bg-gray-200'}`} />}
             </div>
           ))}
         </div>
@@ -125,8 +125,8 @@ const Checkout = () => {
           <div className="md:col-span-2 space-y-6">
             {step === 1 && (
               <Card className="border-none shadow-sm rounded-sm">
-                <CardHeader className="bg-[#2874f0] text-white p-4 rounded-t-sm">
-                  <CardTitle className="text-lg flex items-center gap-2 uppercase">
+                <CardHeader className="bg-primary text-white p-4 rounded-t-sm">
+                  <CardTitle className="text-lg flex items-center gap-2 uppercase font-black">
                     <Home size={18} /> 1. Delivery Address
                   </CardTitle>
                 </CardHeader>
