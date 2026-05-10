@@ -15,23 +15,23 @@ public class CartController {
     private CartService cartService;
 
     @GetMapping
-    public Cart getCart(@RequestParam String email) {
-        return cartService.getCart(email);
+    public Cart getCart(java.security.Principal principal) {
+        return cartService.getCart(principal.getName());
     }
 
     @PostMapping("/add")
-    public Cart addItem(@RequestParam String email, @RequestBody CartItem item) {
-        return cartService.addItemToCart(email, item);
+    public Cart addItem(java.security.Principal principal, @RequestBody CartItem item) {
+        return cartService.addItemToCart(principal.getName(), item);
     }
 
     @DeleteMapping("/remove/{productId}")
-    public Cart removeItem(@RequestParam String email, @PathVariable Long productId) {
-        return cartService.removeItemFromCart(email, productId);
+    public Cart removeItem(java.security.Principal principal, @PathVariable Long productId) {
+        return cartService.removeItemFromCart(principal.getName(), productId);
     }
 
     @DeleteMapping("/clear")
-    public void clearCart(@RequestParam String email) {
-        cartService.clearCart(email);
+    public void clearCart(java.security.Principal principal) {
+        cartService.clearCart(principal.getName());
     }
 
     @GetMapping("/summary")
