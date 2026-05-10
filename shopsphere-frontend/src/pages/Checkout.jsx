@@ -27,9 +27,15 @@ const Checkout = () => {
   const handlePlaceOrder = async () => {
     setLoading(true);
     try {
-      // 1. Create Razorpay Order on Backend
       const response = await api.post('/payments/create-order', { amount: totalAmount });
-      const orderData = JSON.parse(response.data);
+
+      let orderData;
+      try {
+        orderData = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
+      } catch (e) {
+        console.error("Failed to parse order data:", response.data);
+        throw new Error("Invalid order data received from server");
+      }
 
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_placeholder', // Should be in .env
@@ -39,17 +45,15 @@ const Checkout = () => {
         description: "Payment for your order",
         order_id: orderData.id,
         handler: async (response) => {
-          // 2. Verify Payment on Backend
           const verifyData = {
             razorpay_order_id: response.razorpay_order_id,
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_signature: response.razorpay_signature
           };
-          
+
           const isVerified = await api.post('/payments/verify', verifyData);
-          
+
           if (isVerified.data) {
-            // 3. Save Order in Database
             const orderPayload = {
               items: items,
               totalAmount: totalAmount,
@@ -58,10 +62,10 @@ const Checkout = () => {
               paymentMethod: 'RAZORPAY',
               status: 'PAID'
             };
-            
+
             await api.post('/orders', orderPayload);
             clearCart();
-            setStep(4); // Success step
+            setStep(4);
           } else {
             alert('Payment verification failed!');
           }
@@ -103,8 +107,6 @@ const Checkout = () => {
   return (
     <div className="min-h-screen bg-gray-100 py-8">
       <div className="max-w-4xl mx-auto px-4">
-        
-        {/* Progress Steps */}
         <div className="flex items-center justify-between mb-8 px-4 overflow-x-auto gap-4">
           {[1, 2, 3].map((s) => (
             <div key={s} className="flex items-center gap-2">
@@ -121,7 +123,7 @@ const Checkout = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="md:col-span-2 space-y-6">
-            
+
             {/* Step 1: Address */}
             {step === 1 && (
               <Card className="border-none shadow-sm rounded-sm">
@@ -138,40 +140,40 @@ const Checkout = () => {
                     </div>
                     <div className="space-y-2">
                       <Label>Phone Number</Label>
-                      <Input 
-                        placeholder="10-digit mobile number" 
+                      <Input
+                        placeholder="10-digit mobile number"
                         value={formData.phone}
-                        onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       />
                     </div>
                   </div>
                   <div className="space-y-2">
                     <Label>Detailed Address</Label>
-                    <Input 
-                      placeholder="House No, Building, Street, Area" 
+                    <Input
+                      placeholder="House No, Building, Street, Area"
                       value={formData.address}
-                      onChange={(e) => setFormData({...formData, address: e.target.value})}
+                      onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                     />
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label>City / Town</Label>
-                      <Input 
-                        placeholder="e.g. Bangalore" 
+                      <Input
+                        placeholder="e.g. Bangalore"
                         value={formData.city}
-                        onChange={(e) => setFormData({...formData, city: e.target.value})}
+                        onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                       />
                     </div>
                     <div className="space-y-2">
                       <Label>Pincode</Label>
-                      <Input 
-                        placeholder="6-digit code" 
+                      <Input
+                        placeholder="6-digit code"
                         value={formData.pincode}
-                        onChange={(e) => setFormData({...formData, pincode: e.target.value})}
+                        onChange={(e) => setFormData({ ...formData, pincode: e.target.value })}
                       />
                     </div>
                   </div>
-                  <Button 
+                  <Button
                     className="w-full bg-orange-500 hover:bg-orange-600 h-12 uppercase font-bold mt-4"
                     onClick={() => setStep(2)}
                   >
@@ -220,14 +222,14 @@ const Checkout = () => {
                 </CardHeader>
                 <CardContent className="p-6 space-y-6">
                   <div className="space-y-4">
-                    <div className={`p-4 border rounded-sm flex items-center gap-4 cursor-pointer transition-all ${formData.paymentMethod === 'CARD' ? 'border-blue-600 bg-blue-50 ring-1 ring-blue-600' : 'hover:bg-gray-50'}`} onClick={() => setFormData({...formData, paymentMethod: 'CARD'})}>
+                    <div className={`p-4 border rounded-sm flex items-center gap-4 cursor-pointer transition-all ${formData.paymentMethod === 'CARD' ? 'border-blue-600 bg-blue-50 ring-1 ring-blue-600' : 'hover:bg-gray-50'}`} onClick={() => setFormData({ ...formData, paymentMethod: 'CARD' })}>
                       <CreditCard className="text-blue-600" />
                       <div>
                         <p className="font-bold">Credit / Debit / ATM Card</p>
                         <p className="text-xs text-gray-500">Pay securely using your bank card</p>
                       </div>
                     </div>
-                    
+
                     {formData.paymentMethod === 'CARD' && (
                       <div className="p-4 bg-blue-50/50 border rounded-sm space-y-4 animate-in slide-in-from-top-2 duration-300">
                         <Input placeholder="Card Number (XXXX XXXX XXXX XXXX)" maxLength={16} />
@@ -238,7 +240,7 @@ const Checkout = () => {
                       </div>
                     )}
 
-                    <div className={`p-4 border rounded-sm flex items-center gap-4 cursor-pointer transition-all ${formData.paymentMethod === 'NETBANK' ? 'border-blue-600 bg-blue-50 ring-1 ring-blue-600' : 'hover:bg-gray-50'}`} onClick={() => setFormData({...formData, paymentMethod: 'NETBANK'})}>
+                    <div className={`p-4 border rounded-sm flex items-center gap-4 cursor-pointer transition-all ${formData.paymentMethod === 'NETBANK' ? 'border-blue-600 bg-blue-50 ring-1 ring-blue-600' : 'hover:bg-gray-50'}`} onClick={() => setFormData({ ...formData, paymentMethod: 'NETBANK' })}>
                       <Landmark className="text-blue-600" />
                       <div>
                         <p className="font-bold">Net Banking</p>
@@ -247,7 +249,7 @@ const Checkout = () => {
                     </div>
                   </div>
 
-                  <Button 
+                  <Button
                     className="w-full bg-[#fb641b] hover:bg-[#e65a19] h-12 uppercase font-extrabold text-lg shadow-lg"
                     disabled={loading}
                     onClick={handlePlaceOrder}
