@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,14 +16,19 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String userEmail;
+    
+    private String email;
     private LocalDateTime orderDate;
-    private BigDecimal totalAmount;
-
-    @Enumerated(EnumType.STRING)
-    private OrderStatus status;
-
+    private Double totalAmount;
+    private String status; // PENDING, PAID, SHIPPED, DELIVERED
+    
+    private String shippingAddress;
+    private String phoneNumber;
+    
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
     private List<OrderItem> items;
+    
+    private String paymentMethod;
+    private String paymentStatus;
 }
