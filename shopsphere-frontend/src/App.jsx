@@ -9,35 +9,47 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import useAuthStore from './store/useAuthStore';
 import useCartStore from './store/useCartStore';
+import useThemeStore from './store/useThemeStore';
 import './styles/variables.css';
 
 function App() {
   const { isAuthenticated, user } = useAuthStore();
   const { fetchCart } = useCartStore();
+  const { theme } = useThemeStore();
   const isAdmin = user?.role === 'ROLE_ADMIN' || user?.role === 'ADMIN';
 
   useEffect(() => {
+    // Apply theme to html element
+    const root = window.document.documentElement;
+    root.classList.remove('light', 'dark');
+    root.classList.add(theme);
+  }, [theme]);
+
+  useEffect(() => {
     if (isAuthenticated) {
-      fetchCart();
+      fetchCart(isAuthenticated);
     }
   }, [isAuthenticated, fetchCart]);
 
   return (
     <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/" />} />
-        <Route path="/register" element={!isAuthenticated ? <Register /> : <Navigate to="/" />} />
-        <Route 
-          path="/admin/dashboard" 
-          element={isAuthenticated && isAdmin ? <Dashboard /> : <Navigate to="/" />} 
-        />
-        <Route path="/cart" element={isAuthenticated ? <Cart /> : <Navigate to="/login" />} />
-        <Route path="/checkout" element={isAuthenticated ? <Checkout /> : <Navigate to="/login" />} />
-        {/* Placeholder for Cart and other pages */}
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+      <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
+        <Navbar />
+        <main className="main-container py-8">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/" />} />
+            <Route path="/register" element={!isAuthenticated ? <Register /> : <Navigate to="/" />} />
+            <Route 
+              path="/admin/dashboard" 
+              element={isAuthenticated && isAdmin ? <Dashboard /> : <Navigate to="/" />} 
+            />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={isAuthenticated ? <Checkout /> : <Navigate to="/login" />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </main>
+      </div>
     </Router>
   );
 }
