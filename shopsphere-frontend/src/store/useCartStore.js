@@ -1,8 +1,18 @@
 import { create } from 'zustand';
 import api from '../api/axios';
 
+const getStoredCart = () => {
+  try {
+    const cart = localStorage.getItem('guest_cart');
+    if (cart === null || cart === 'undefined') return { items: [] };
+    return JSON.parse(cart);
+  } catch (e) {
+    return { items: [] };
+  }
+};
+
 const useCartStore = create((set, get) => ({
-  cart: JSON.parse(localStorage.getItem('guest_cart')) || { items: [] },
+  cart: getStoredCart(),
   loading: false,
   error: null,
 
