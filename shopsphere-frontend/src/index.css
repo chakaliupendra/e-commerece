@@ -15,27 +15,29 @@
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #0f172a;
+  /* Soft, Designer Light Mode */
+  --background: #fdfdfd;
+  --foreground: #020617;
   --card: #ffffff;
-  --card-foreground: #0f172a;
-  --primary: #ff6b00; /* Vivid Orange */
+  --card-foreground: #020617;
+  --primary: #ff6b00;
   --primary-foreground: #ffffff;
-  --border: #e2e8f0;
-  --input: #e2e8f0;
+  --border: rgba(0, 0, 0, 0.06);
+  --input: #f1f5f9;
   --ring: #ff6b00;
   
-  --radius: 1rem;
+  --radius: 1.5rem;
 }
 
 .dark {
+  /* Sleek, Premium Dark Mode */
   --background: #020617;
   --foreground: #f8fafc;
   --card: #0f172a;
   --card-foreground: #f8fafc;
-  --primary: #ff8c33; /* Softer Orange for Dark Mode */
-  --primary-foreground: #0f172a;
-  --border: #1e293b;
+  --primary: #ff8c33;
+  --primary-foreground: #020617;
+  --border: rgba(255, 255, 255, 0.08);
   --input: #1e293b;
   --ring: #ff8c33;
 }
@@ -49,29 +51,46 @@ body {
   background-color: var(--background);
   color: var(--foreground);
   min-height: 100vh;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Added subtle background texture */
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(255, 107, 0, 0.02) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(255, 107, 0, 0.02) 0px, transparent 50%);
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Outfit', sans-serif;
+  letter-spacing: -0.02em;
 }
 
-/* Custom Glassmorphism with Orange Glow */
+/* Luxury Spacing & Padding System */
+.section-padding {
+  @apply py-16 md:py-24 lg:py-32;
+}
+
+.container-padding {
+  @apply px-6 md:px-12 lg:px-16;
+}
+
+/* Centered & Refined Container */
+.main-container {
+  @apply max-w-7xl mx-auto container-padding;
+}
+
+/* Aesthetic Glassmorphism */
 .glass {
-  background: hsla(var(--background), 0.8);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--border);
+  @apply bg-background/70 backdrop-blur-xl border border-border shadow-sm;
 }
 
-.hero-gradient {
-  background: radial-gradient(circle at 50% 50%, rgba(255, 107, 0, 0.1) 0%, transparent 50%);
+/* Premium Card Style */
+.aesthetic-card {
+  @apply bg-card rounded-[2rem] border border-border transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-1;
 }
 
 .btn-primary {
-  @apply bg-primary text-primary-foreground hover:opacity-90 transition-all active:scale-95 shadow-lg shadow-primary/20 font-bold px-8 py-3 rounded-2xl;
+  @apply bg-primary text-primary-foreground hover:opacity-90 transition-all active:scale-95 shadow-xl shadow-primary/20 font-extrabold px-10 py-4 rounded-2xl;
 }
 
-/* Centered Container */
-.main-container {
-  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+#root {
+  width: 100%;
 }
