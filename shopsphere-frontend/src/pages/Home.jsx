@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import api from '../api/axios';
 import ProductCard from '../components/ProductCard';
-import { Zap, Sparkles, Rocket } from 'lucide-react';
+import { Search, ShoppingBag, ArrowRight } from 'lucide-react';
+import { Button } from '../components/ui/button';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -14,8 +15,8 @@ const Home = () => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const endpoint = searchQuery 
-          ? `/products/search?name=${searchQuery}` 
+        const endpoint = searchQuery
+          ? `/products/search?name=${searchQuery}`
           : '/products';
         const response = await api.get(endpoint);
         setProducts(response.data.content || response.data);
@@ -29,86 +30,83 @@ const Home = () => {
   }, [searchQuery]);
 
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative py-20 px-4 overflow-hidden">
-        {/* Background Glows */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-96 bg-purple-600/20 blur-[120px] rounded-full -z-10" />
-        <div className="absolute bottom-0 right-0 w-64 h-64 bg-pink-600/10 blur-[100px] rounded-full -z-10" />
-
-        <div className="max-w-4xl mx-auto text-center space-y-8 relative">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-purple-400 text-xs font-bold uppercase tracking-widest animate-pulse">
-            <Sparkles size={14} />
-            The Future of Shopping is Here
+    <div className="min-h-screen pb-20">
+      <section className="bg-[#fff5f0] py-12 md:py-20 px-4">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div className="space-y-6 text-center md:text-left">
+            <Badge className="bg-orange-100 text-brand-primary border-none font-bold px-4 py-1.5 rounded-full text-xs uppercase tracking-wider">
+              New Collection 2026
+            </Badge>
+            <h1 className="text-4xl md:text-6xl font-black text-gray-900 leading-tight">
+              Quality Products. <br />
+              <span className="text-brand-primary">Unbeatable</span> Prices.
+            </h1>
+            <p className="text-gray-600 text-sm md:text-base max-w-md mx-auto md:mx-0">
+              Discover over 1,000+ premium products curated just for you. Get the best deals on electronics, fashion, and more.
+            </p>
+            <div className="flex flex-wrap justify-center md:justify-start gap-4">
+              <Button className="bg-brand-primary hover:bg-brand-secondary h-12 px-8 rounded-full font-bold shadow-orange">
+                Shop Now <ArrowRight size={18} className="ml-2" />
+              </Button>
+              <Button variant="outline" className="h-12 px-8 rounded-full font-bold border-gray-200">
+                Explore Categories
+              </Button>
+            </div>
           </div>
-          
-          <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-white leading-tight">
-            Code Your <span className="bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent">Style</span> with ShopSphere
-          </h1>
-          
-          <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
-            Discover a curated collection of premium products designed for the modern era. 
-            Fast delivery, secure payments, and a tech-first experience.
-          </p>
 
-          <div className="flex flex-wrap justify-center gap-4 pt-4">
-            <div className="flex items-center gap-2 px-6 py-3 rounded-2xl glass font-bold text-sm">
-              <Zap size={18} className="text-purple-500" />
-              Fast Delivery
-            </div>
-            <div className="flex items-center gap-2 px-6 py-3 rounded-2xl glass font-bold text-sm">
-              <Rocket size={18} className="text-pink-500" />
-              Premium Quality
-            </div>
+          <div className="hidden md:flex justify-center relative">
+            <div className="w-80 h-80 bg-brand-primary/10 rounded-full absolute -z-10 blur-3xl animate-pulse" />
+            <img
+              src="https://rukminim2.flixcart.com/www/800/800/promos/16/05/2019/d438a32e-765a-4d8b-b4a6-520b560971e8.png?q=90"
+              alt="Hero Illustration"
+              className="w-full max-w-sm drop-shadow-2xl"
+            />
           </div>
         </div>
       </section>
 
-      {/* Product Section */}
-      <section className="max-w-7xl mx-auto px-4 py-20">
-        <div className="flex flex-col md:flex-row justify-between items-end gap-4 mb-12">
-          <div className="space-y-2">
-            <h2 className="text-3xl font-black text-white flex items-center gap-3">
-              <div className="w-2 h-8 bg-purple-600 rounded-full" />
-              Featured Catalog
+      {/* Catalog Grid */}
+      <section className="max-w-7xl mx-auto px-4 mt-12">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-8">
+          <div>
+            <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900">
+              {searchQuery ? `Search results for "${searchQuery}"` : 'Featured Products'}
             </h2>
-            <p className="text-gray-500 font-mono text-sm">/inventory/latest_drops.json</p>
+            <div className="w-20 h-1.5 bg-brand-primary rounded-full mt-2" />
           </div>
-          {searchQuery && (
-            <div className="text-purple-400 font-bold bg-purple-500/10 px-4 py-1 rounded-lg border border-purple-500/20">
-              Showing results for: "{searchQuery}"
-            </div>
-          )}
+          <div className="flex items-center gap-2 text-sm font-bold text-gray-500">
+            <ShoppingBag size={18} />
+            <span>Showing {products.length} products</span>
+          </div>
         </div>
 
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-32 space-y-4">
-            <div className="w-12 h-12 border-4 border-purple-500/20 border-t-purple-500 rounded-full animate-spin" />
-            <p className="text-gray-500 font-mono animate-pulse">Loading modules...</p>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+              <div key={i} className="aspect-[4/5] bg-gray-100 rounded-2xl animate-pulse" />
+            ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
             {products.length > 0 ? (
               products.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))
             ) : (
-              <div className="col-span-full text-center py-20 glass rounded-3xl">
-                <h3 className="text-2xl font-bold text-gray-500">No products found in this branch.</h3>
-                <p className="text-gray-600 mt-2">Try a different search query or check back later.</p>
+              <div className="col-span-full py-20 text-center">
+                <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Search size={32} className="text-gray-400" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900">No results found</h3>
+                <p className="text-gray-500">Try checking your spelling or using more general terms</p>
+                <Button variant="link" className="text-brand-primary mt-2" onClick={() => navigate('/')}>
+                  Clear all filters
+                </Button>
               </div>
             )}
           </div>
         )}
       </section>
-
-      {/* Footer Decoration */}
-      <footer className="py-20 border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-4 text-center space-y-4">
-          <div className="text-2xl font-black text-white/20">SHOP<span className="text-purple-500/20">SPHERE</span></div>
-          <p className="text-gray-600 text-xs font-mono">© 2026 Crafted with Chai & Code</p>
-        </div>
-      </footer>
     </div>
   );
 };

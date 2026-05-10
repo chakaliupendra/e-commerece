@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingCart, Plus, Zap } from 'lucide-react';
+import { ShoppingCart, Plus, Star } from 'lucide-react';
 import useCartStore from '../store/useCartStore';
 import useAuthStore from '../store/useAuthStore';
 import { Badge } from './ui/badge';
@@ -10,44 +10,50 @@ const ProductCard = ({ product }) => {
   const { isAuthenticated } = useAuthStore();
 
   return (
-    <div className="group glass rounded-2xl overflow-hidden hover:border-purple-500/50 transition-all duration-300 hover:-translate-y-1">
-      <div className="relative aspect-square overflow-hidden bg-white/5">
+    <div className="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:border-brand-primary/20 transition-all duration-300 shadow-sm hover:shadow-md">
+      <div className="relative aspect-[4/5] overflow-hidden bg-gray-50">
         <img 
           src={product.imageUrl || 'https://via.placeholder.com/300x300?text=ShopSphere'} 
           alt={product.name} 
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
-        <div className="absolute top-3 left-3">
-          <Badge className="bg-purple-600/80 backdrop-blur-md border-none text-[10px] font-bold uppercase tracking-wider">
-            Premium
+        <div className="absolute top-3 left-3 flex flex-col gap-2">
+          <Badge className="bg-brand-primary border-none text-white font-bold px-2 py-0.5">
+            -20%
           </Badge>
+          <div className="flex items-center gap-1 bg-white/90 backdrop-blur-sm px-1.5 py-0.5 rounded text-[10px] font-bold text-gray-700 shadow-sm">
+            <Star size={10} className="fill-brand-accent text-brand-accent" />
+            4.8
+          </div>
         </div>
       </div>
       
-      <div className="p-5 space-y-4">
+      <div className="p-4 space-y-3">
         <div className="space-y-1">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-purple-400 opacity-80">
-            {product.category?.name || 'Electronics'}
-          </span>
-          <h3 className="font-bold text-lg text-white line-clamp-1 group-hover:text-purple-400 transition-colors">
+          <h3 className="font-bold text-base text-gray-900 line-clamp-1 group-hover:text-brand-primary transition-colors">
             {product.name}
           </h3>
-          <p className="text-sm text-gray-400 line-clamp-2 h-10 leading-relaxed">
+          <p className="text-xs text-gray-500 line-clamp-2 h-8 leading-relaxed">
             {product.description}
           </p>
         </div>
 
-        <div className="flex items-center justify-between pt-2">
+        <div className="flex items-center justify-between pt-1">
           <div className="flex flex-col">
-            <span className="text-2xl font-black text-white">${product.price}</span>
-            <span className="text-[10px] text-green-400 font-bold">In Stock</span>
+            <div className="flex items-center gap-2">
+              <span className="text-xl font-extrabold text-gray-900">${product.price}</span>
+              <span className="text-xs text-gray-400 line-through">${(product.price * 1.2).toFixed(2)}</span>
+            </div>
+            <span className="text-[10px] text-green-600 font-bold flex items-center gap-1">
+              Free Delivery
+            </span>
           </div>
           
           <Button 
             onClick={() => addItem(product, 1, isAuthenticated)}
-            className="w-12 h-12 rounded-xl bg-purple-600 hover:bg-purple-500 p-0 shadow-lg shadow-purple-500/20 group-active:scale-95 transition-all"
+            className="w-10 h-10 rounded-xl bg-gray-900 hover:bg-brand-primary text-white p-0 shadow-sm transition-all active:scale-95"
           >
-            <Plus size={24} className="text-white" />
+            <Plus size={20} />
           </Button>
         </div>
       </div>

@@ -12,8 +12,9 @@ import useCartStore from './store/useCartStore';
 import './styles/variables.css';
 
 function App() {
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, user } = useAuthStore();
   const { fetchCart } = useCartStore();
+  const isAdmin = user?.role === 'ROLE_ADMIN' || user?.role === 'ADMIN';
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -28,7 +29,10 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/" />} />
         <Route path="/register" element={!isAuthenticated ? <Register /> : <Navigate to="/" />} />
-        <Route path="/admin/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
+        <Route 
+          path="/admin/dashboard" 
+          element={isAuthenticated && isAdmin ? <Dashboard /> : <Navigate to="/" />} 
+        />
         <Route path="/cart" element={isAuthenticated ? <Cart /> : <Navigate to="/login" />} />
         <Route path="/checkout" element={isAuthenticated ? <Checkout /> : <Navigate to="/login" />} />
         {/* Placeholder for Cart and other pages */}
