@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  shopsphere-monolith:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ep-weathered-morning-ap1fuqw3.c-7.us-east-1.aws.neon.tech/neondb?sslmode=require
+      - SPRING_DATASOURCE_USERNAME=neondb_owner
+      - SPRING_DATASOURCE_PASSWORD=npg_9Odrm2oAXxQY
