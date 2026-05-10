@@ -27,21 +27,60 @@ const Checkout = () => {
   const handlePlaceOrder = async () => {
     setLoading(true);
     try {
-      const orderPayload = {
-        items: items,
-        totalAmount: totalAmount,
-        shippingAddress: `${formData.address}, ${formData.city} - ${formData.pincode}`,
-        phoneNumber: formData.phone,
-        paymentMethod: formData.paymentMethod,
-        status: 'PAID'
+      // 1. Create Razorpay Order on Backend
+      const response = await api.post('/payments/create-order', { amount: totalAmount });
+      const orderData = JSON.parse(response.data);
+
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_placeholder', // Should be in .env
+        amount: orderData.amount,
+        currency: orderData.currency,
+        name: "ShopSphere",
+        description: "Payment for your order",
+        order_id: orderData.id,
+        handler: async (response) => {
+          // 2. Verify Payment on Backend
+          const verifyData = {
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature
+          };
+          
+          const isVerified = await api.post('/payments/verify', verifyData);
+          
+          if (isVerified.data) {
+            // 3. Save Order in Database
+            const orderPayload = {
+              items: items,
+              totalAmount: totalAmount,
+              shippingAddress: `${formData.address}, ${formData.city} - ${formData.pincode}`,
+              phoneNumber: formData.phone,
+              paymentMethod: 'RAZORPAY',
+              status: 'PAID'
+            };
+            
+            await api.post('/orders', orderPayload);
+            clearCart();
+            setStep(4); // Success step
+          } else {
+            alert('Payment verification failed!');
+          }
+        },
+        prefill: {
+          name: "Customer Name",
+          email: "customer@example.com",
+          contact: formData.phone
+        },
+        theme: {
+          color: "#2874f0"
+        }
       };
-      
-      await api.post('/orders', orderPayload);
-      clearCart();
-      setStep(4); // Success step
+
+      const rzp1 = new window.Razorpay(options);
+      rzp1.open();
     } catch (error) {
-      console.error('Checkout failed:', error);
-      alert('Order placement failed. Please try again.');
+      console.error('Razorpay Error:', error);
+      alert('Failed to initiate payment.');
     } finally {
       setLoading(false);
     }
